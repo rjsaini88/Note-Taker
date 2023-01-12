@@ -46,9 +46,9 @@ router.post("/", (req, res) => {
 });
 
 //delete notes
-router.delete('/', (req, res) =>{
-let id = req.params.noteId;
-console.log(id);
-});
+// router.delete('/', (req, res) =>{
+// let id = req.params.noteId;
+
+// });
 
 module.exports = router;
