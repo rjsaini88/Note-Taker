@@ -4,22 +4,26 @@ const fs = require("fs");
 const uuid = require("../helpers/uuid");
 
 router.get("/", (req, res) => {
-  res.json(`${req.method} REQUEST RECEIVED`);
+  const existingNotes = fs.readFileSync("./db/db.json", "utf-8");
+  res.json(JSON.parse(existingNotes));
+  // res.json(`${req.method} REQUEST RECEIVED`);
 });
 
+const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
 router.post("/", (req, res) => {
   res.json(`${req.method} REQUEST RECEIVED`);
 
   const { title, text } = req.body;
   if (title && text) {
-    const newNote = { title, text, note_id: uuid() };
-    // }
-    // });
+    const newNote = { 
+      title, 
+      text, 
+      noteId: uuid() 
+    };
 
     //how to read and write from the database
 
     //Get existing reviews
-    const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
 
     existingNotes.push(newNote);
 
@@ -39,6 +43,12 @@ router.post("/", (req, res) => {
   } else {
     res.status(500).json("Error in adding the note");
   }
+});
+
+//delete notes
+router.delete('/', (req, res) =>{
+let id = req.params.noteId;
+console.log(id);
 });
 
 module.exports = router;
