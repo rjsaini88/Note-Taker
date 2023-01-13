@@ -3,26 +3,24 @@ const fs = require("fs");
 // Helper method for generating unique ids
 const uuid = require("../helpers/uuid");
 
-const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
+// const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
 router.get("/", (req, res) => {
-  // const existingNotes = fs.readFileSync("./db/db.json", "utf-8");
-  // res.json(JSON.parse(existingNotes));
+  const existingNotes = fs.readFileSync("./db/db.json", "utf-8");
+  res.json(JSON.parse(existingNotes));
   // res.json(`${req.method} REQUEST RECEIVED`);
-  res.json(existingNotes);
 });
 
 router.post("/", (req, res) => {
-
   const { title, text } = req.body;
   if (title && text) {
-    const newNote = { 
-      title, 
-      text, 
-      id: uuid() 
+    const newNote = {
+      title,
+      text,
+      id: uuid(),
     };
 
     //how to read and write from the database
-
+    const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
     //Get existing reviews
 
     existingNotes.push(newNote);
@@ -47,32 +45,17 @@ router.post("/", (req, res) => {
 
 //delete notes
 
+//Rudy Y helped with this code
 
-// router.delete('/:id', function (req, res) {
-//   const newNotes = existingNotes.filter(note) => {
-//     return note.id !== req.params.noteId;}
-// // let id = req.params.noteId;
+router.delete("/:id", function (req, res) {
+  const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
+  const newNotes = existingNotes.filter((note) => {
+    return note.id !== req.params.id;
+  });
 
-//   });
-// fs.writefile('./db/db.json', JSON.stringify(newNotes), (err) =>
-// err
-//   ? console.error(err)
-//   : console.log(`Your note has been deleted. `}
-//   );
+  fs.writeFileSync("./db/db.json", JSON.stringify(newNotes));
 
+  res.json("Note Deleted");
+});
 
-//Need explanation on this
-// router.delete('/:id', function(req, res) {
-//   let data = fs.readFileSync('./db/db.json', 'utf8');
-//   const dataFromJSON = JSON.parse(data)
-//   const newNote = dataFromJSON.filter(note) => {
-//     return note.id !== req.params.id;
-//   });
-//   fs.writeFile('./db/db.json', JSON.stringify(newNote), (err) =>{
-//      err
-//      ? console.error(err)
-//        : console.log(`Your note has been deleted.) `
-//   }); 
-
-  
 module.exports = router;
