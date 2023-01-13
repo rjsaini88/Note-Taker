@@ -12,14 +12,13 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  res.json(`${req.method} REQUEST RECEIVED`);
 
   const { title, text } = req.body;
   if (title && text) {
     const newNote = { 
       title, 
       text, 
-      noteId: uuid() 
+      id: uuid() 
     };
 
     //how to read and write from the database
