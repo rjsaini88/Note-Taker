@@ -3,13 +3,14 @@ const fs = require("fs");
 // Helper method for generating unique ids
 const uuid = require("../helpers/uuid");
 
+const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
 router.get("/", (req, res) => {
-  const existingNotes = fs.readFileSync("./db/db.json", "utf-8");
-  res.json(JSON.parse(existingNotes));
+  // const existingNotes = fs.readFileSync("./db/db.json", "utf-8");
+  // res.json(JSON.parse(existingNotes));
   // res.json(`${req.method} REQUEST RECEIVED`);
+  res.json(existingNotes);
 });
 
-const existingNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
 router.post("/", (req, res) => {
   res.json(`${req.method} REQUEST RECEIVED`);
 
@@ -46,9 +47,33 @@ router.post("/", (req, res) => {
 });
 
 //delete notes
-// router.delete('/', (req, res) =>{
-// let id = req.params.noteId;
 
-// });
 
+// router.delete('/:id', function (req, res) {
+//   const newNotes = existingNotes.filter(note) => {
+//     return note.id !== req.params.noteId;}
+// // let id = req.params.noteId;
+
+//   });
+// fs.writefile('./db/db.json', JSON.stringify(newNotes), (err) =>
+// err
+//   ? console.error(err)
+//   : console.log(`Your note has been deleted. `}
+//   );
+
+
+//Need explanation on this
+// router.delete('/:id', function(req, res) {
+//   let data = fs.readFileSync('./db/db.json', 'utf8');
+//   const dataFromJSON = JSON.parse(data)
+//   const newNote = dataFromJSON.filter(note) => {
+//     return note.id !== req.params.id;
+//   });
+//   fs.writeFile('./db/db.json', JSON.stringify(newNote), (err) =>{
+//      err
+//      ? console.error(err)
+//        : console.log(`Your note has been deleted.) `
+//   }); 
+
+  
 module.exports = router;
